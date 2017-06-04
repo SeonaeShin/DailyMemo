@@ -17,7 +17,7 @@ class Carousel extends Component {
     static defaultProps = {
         hideIndicators: false,
         indicatorColor: '#000000',
-        indicatorSize: 40,
+        indicatorSize: 20,
         inactiveIndicatorColor: '#999999',
         indicatorAtBottom: true,
         indicatorOffset: 250,
@@ -73,7 +73,7 @@ class Carousel extends Component {
             width: this.props.children.length * this.props.indicatorSpace,
         };
 
-        position.left = (this.getWidth() - position.width) / 2;
+        position.left = (this.getWidth() - position.width) / 1.3;
 
         for (var i = 0, l = this.props.children.length; i < l; i++) {
             if (typeof this.props.children[i] === "undefined") {
@@ -96,7 +96,7 @@ class Carousel extends Component {
         }
 
         return (
-            <View style={[styles.pageIndicator, position, indicatorStyle]}>
+            <View style={[styles.pageIndicator,position]}>
                 {indicators}
             </View>
         );
@@ -130,12 +130,10 @@ class Carousel extends Component {
 const styles = StyleSheet.create({
     pageIndicator: {
         position: 'absolute',
+        height:5,
+        top:0,
         flexDirection: 'row',
-        flex: 1,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        alignSelf: 'center',
-        backgroundColor: 'transparent',
+        alignItems: 'flex-start',
     },
 });
 
