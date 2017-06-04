@@ -56,6 +56,167 @@ export default class interactableTest1 extends Component {
         this.setState({receivedKeyboardData});
     }
 
+    getCardView() {
+        const fontTermA = (SCREEN_WIDTH / 2) * 1.6;
+        const fontTermB = 100;
+
+        const opaTermA = (SCREEN_WIDTH / 2) * 1.6;
+        const opaTermB = 200;
+
+        var updateFontSize1 = this.state.scrollY.interpolate({
+            inputRange: [fontTermA * 0, fontTermA * 0 + fontTermB],
+            outputRange: [30, 10],
+            extrapolate: 'clamp',
+        });
+
+        var updateFontSize2 = this.state.scrollY.interpolate({
+            inputRange: [fontTermA * 1, fontTermA * 1 + fontTermB],
+            outputRange: [30, 10],
+            extrapolate: 'clamp',
+        });
+
+        var updateFontSize3 = this.state.scrollY.interpolate({
+            inputRange: [fontTermA * 2, fontTermA * 2 + fontTermB],
+            outputRange: [30, 10],
+            extrapolate: 'clamp',
+        });
+
+        var updateFontSize4 = this.state.scrollY.interpolate({
+            inputRange: [fontTermA * 3, fontTermA * 3 + fontTermB],
+            outputRange: [30, 10],
+            extrapolate: 'clamp',
+        });
+
+        var updateFontSize5 = this.state.scrollY.interpolate({
+            inputRange: [fontTermA * 4, fontTermA * 4 + fontTermB],
+            outputRange: [30, 10],
+            extrapolate: 'clamp',
+        });
+
+        var updateFontSize6 = this.state.scrollY.interpolate({
+            inputRange: [fontTermA * 5, fontTermA * 5 + fontTermB],
+            outputRange: [30, 10],
+            extrapolate: 'clamp',
+        });
+
+        var updateOpacity1 = this.state.scrollY.interpolate({
+            inputRange: [opaTermA * 0, opaTermA * 0 + opaTermB],
+            outputRange: [1, 0.2],
+            extrapolate: 'clamp',
+        });
+
+        var updateOpacity2 = this.state.scrollY.interpolate({
+            inputRange: [opaTermA * 1, opaTermA * 1 + opaTermB],
+            outputRange: [1, 0.2],
+            extrapolate: 'clamp',
+        });
+
+        var updateOpacity3 = this.state.scrollY.interpolate({
+            inputRange: [opaTermA * 2, opaTermA * 2 + opaTermB],
+            outputRange: [1, 0.2],
+            extrapolate: 'clamp',
+        });
+
+        var updateOpacity4 = this.state.scrollY.interpolate({
+            inputRange: [opaTermA * 3, opaTermA * 3 + opaTermB],
+            outputRange: [1, 0.2],
+            extrapolate: 'clamp',
+        });
+
+        var updateOpacity5 = this.state.scrollY.interpolate({
+            inputRange: [opaTermA * 4, opaTermA * 4 + opaTermB],
+            outputRange: [1, 0.2],
+            extrapolate: 'clamp',
+        });
+
+        var updateOpacity6 = this.state.scrollY.interpolate({
+            inputRange: [opaTermA * 5, opaTermA * 5 + opaTermB],
+            outputRange: [1, 0.2],
+            extrapolate: 'clamp',
+        });
+
+        return [
+            <View
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                scrollEventThrottle={10}
+                horizontal={false}
+                showsVerticalScrollIndicator={false}
+                overScrollMode={'never'}
+                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
+                <Animated.Text
+                    style={[styles.cardTitle,{fontSize:updateFontSize1}]}>2017. 6. 1</Animated.Text>
+                <Animated.View style={[styles.card,{opacity:updateOpacity1,}]}>
+                </Animated.View>
+            </View>,
+
+            <View
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                scrollEventThrottle={10}
+                horizontal={false}
+                showsVerticalScrollIndicator={false}
+                overScrollMode={'never'}
+                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
+                <Animated.Text
+                    style={[styles.cardTitle,{fontSize:updateFontSize2}]}>2017. 6. 2</Animated.Text>
+                <Animated.View style={[styles.card,{opacity:updateOpacity2}]}>
+                </Animated.View>
+            </View>,
+
+            <View
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                scrollEventThrottle={10}
+                horizontal={false}
+                showsVerticalScrollIndicator={false}
+                overScrollMode={'never'}
+                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
+                <Animated.Text
+                    style={[styles.cardTitle,{fontSize:updateFontSize3}]}>2017. 6. 3</Animated.Text>
+                <Animated.View style={[styles.card,{opacity:updateOpacity3}]}>
+                </Animated.View>
+            </View>,
+
+            <View
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                scrollEventThrottle={10}
+                horizontal={false}
+                showsVerticalScrollIndicator={false}
+                overScrollMode={'never'}
+                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
+                <Animated.Text
+                    style={[styles.cardTitle,{fontSize:updateFontSize4}]}>2017. 6. 4</Animated.Text>
+                <Animated.View style={[styles.card,{opacity:updateOpacity4}]}>
+                </Animated.View>
+            </View>,
+
+            <View
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                scrollEventThrottle={10}
+                horizontal={false}
+                showsVerticalScrollIndicator={false}
+                overScrollMode={'never'}
+                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
+                <Animated.Text
+                    style={[styles.cardTitle,{fontSize:updateFontSize5}]}>2017. 6. 5</Animated.Text>
+                <Animated.View style={[styles.card,{opacity:updateOpacity5}]}>
+                </Animated.View>
+            </View>,
+
+            <View
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                scrollEventThrottle={10}
+                horizontal={false}
+                showsVerticalScrollIndicator={false}
+                overScrollMode={'never'}
+                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
+                <Animated.Text
+                    style={[styles.cardTitle,{fontSize:updateFontSize6}]}>2017. 6. 6</Animated.Text>
+                <Animated.View style={[styles.card,{opacity:updateOpacity6}]}>
+                </Animated.View>
+            </View>,
+
+        ]
+    }
+
     getToolbarButtons() {
         return [
             {
@@ -146,83 +307,6 @@ export default class interactableTest1 extends Component {
 
     render() {
 
-        const fontTermA = (SCREEN_WIDTH / 2) * 1.6;
-        const fontTermB = 100;
-
-        const opaTermA = (SCREEN_WIDTH / 2) * 1.6;
-        const opaTermB = 200;
-
-        var updateFontSize1 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 0, fontTermA * 0 + fontTermB],
-            outputRange: [30, 10],
-            extrapolate: 'clamp',
-        });
-
-        var updateFontSize2 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 1, fontTermA * 1 + fontTermB],
-            outputRange: [30, 10],
-            extrapolate: 'clamp',
-        });
-
-        var updateFontSize3 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 2, fontTermA * 2 + fontTermB],
-            outputRange: [30, 10],
-            extrapolate: 'clamp',
-        });
-
-        var updateFontSize4 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 3, fontTermA * 3 + fontTermB],
-            outputRange: [30, 10],
-            extrapolate: 'clamp',
-        });
-
-        var updateFontSize5 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 4, fontTermA * 4 + fontTermB],
-            outputRange: [30, 10],
-            extrapolate: 'clamp',
-        });
-
-        var updateFontSize6 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 5, fontTermA * 5 + fontTermB],
-            outputRange: [30, 10],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity1 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 0, opaTermA * 0 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity2 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 1, opaTermA * 1 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity3 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 2, opaTermA * 2 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity4 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 3, opaTermA * 3 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity5 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 4, opaTermA * 4 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity6 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 5, opaTermA * 5 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
 
         return (
             <View style={{flex:1}}>
@@ -233,85 +317,7 @@ export default class interactableTest1 extends Component {
                     indicatorStyle={'white'}
                     onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}])}
                     scrollEventThrottle={10}>
-
-                    <View
-                        style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
-                        scrollEventThrottle={10}
-                        horizontal={false}
-                        showsVerticalScrollIndicator={false}
-                        overScrollMode={'never'}
-                        onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                        <Animated.Text
-                            style={{top:0,zIndex:5,position:'absolute',fontSize:updateFontSize1}}>2017. 6. 1</Animated.Text>
-                        <Animated.View style={[styles.card,{opacity:updateOpacity1,}]}>
-                        </Animated.View>
-                    </View>
-
-                    <View
-                        style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
-                        scrollEventThrottle={10}
-                        horizontal={false}
-                        showsVerticalScrollIndicator={false}
-                        overScrollMode={'never'}
-                        onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                        <Animated.Text
-                            style={{top:0,zIndex:5,position:'absolute',fontSize:updateFontSize2}}>2017. 6. 2</Animated.Text>
-                        <Animated.View style={[styles.card,{opacity:updateOpacity2}]}>
-                        </Animated.View>
-                    </View>
-
-                    <View
-                        style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
-                        scrollEventThrottle={10}
-                        horizontal={false}
-                        showsVerticalScrollIndicator={false}
-                        overScrollMode={'never'}
-                        onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                        <Animated.Text
-                            style={{top:0,zIndex:5,position:'absolute',fontSize:updateFontSize3}}>2017. 6. 3</Animated.Text>
-                        <Animated.View style={[styles.card,{opacity:updateOpacity3}]}>
-                        </Animated.View>
-                    </View>
-
-                    <View
-                        style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
-                        scrollEventThrottle={10}
-                        horizontal={false}
-                        showsVerticalScrollIndicator={false}
-                        overScrollMode={'never'}
-                        onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                        <Animated.Text
-                            style={{top:0,zIndex:5,position:'absolute',fontSize:updateFontSize4}}>2017. 6. 4</Animated.Text>
-                        <Animated.View style={[styles.card,{opacity:updateOpacity4}]}>
-                        </Animated.View>
-                    </View>
-
-                    <View
-                        style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
-                        scrollEventThrottle={10}
-                        horizontal={false}
-                        showsVerticalScrollIndicator={false}
-                        overScrollMode={'never'}
-                        onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                        <Animated.Text
-                            style={{top:0,zIndex:5,position:'absolute',fontSize:updateFontSize5}}>2017. 6. 5</Animated.Text>
-                        <Animated.View style={[styles.card,{opacity:updateOpacity5}]}>
-                        </Animated.View>
-                    </View>
-
-                    <View
-                        style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
-                        scrollEventThrottle={10}
-                        horizontal={false}
-                        showsVerticalScrollIndicator={false}
-                        overScrollMode={'never'}
-                        onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                        <Animated.Text
-                            style={{top:0,zIndex:5,position:'absolute',fontSize:updateFontSize6}}>2017. 6. 6</Animated.Text>
-                        <Animated.View style={[styles.card,{opacity:updateOpacity6}]}>
-                        </Animated.View>
-                    </View>
-
+                    {this.getCardView()}
                 </ScrollView>
                 <ActionButton
                     buttonColor="white"
@@ -364,7 +370,7 @@ const styles = StyleSheet.create({
         height: 280,
         backgroundColor: '#469EEE',
         width: SCREEN_WIDTH,
-        marginVertical: 1,
+        marginVertical: 0,
         alignItems: 'center',
     },
 
@@ -419,6 +425,12 @@ const styles = StyleSheet.create({
         paddingRight: 15,
         paddingLeft: 15,
     },
+    cardTitle: {
+        top: 0,
+        left: 60,
+        zIndex: 5,
+        position: 'absolute'
+    }
 });
 
 AppRegistry.registerComponent('interactableTest1', () => interactableTest1);
