@@ -23,10 +23,14 @@ import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import {BlurView} from 'react-native-blur';
 import {KeyboardAccessoryView, KeyboardUtils} from 'react-native-keyboard-input';
 
+import Carousel from './Carousel'
+
 import './demoKeyboards';
 
 const IsIOS = Platform.OS === 'ios';
 const TrackInteractive = true;
+
+var innerArray = [];
 
 export default class interactableTest1 extends Component {
 
@@ -51,9 +55,29 @@ export default class interactableTest1 extends Component {
         }
     }
 
+    componentWillMount() {
+        var tempString;
+        var i = 1;
+        while (i < 7) {
+            tempString = '2017. 6. ' + i;
+            innerArray.push({'date': tempString, 'memo': ['주말 여행 계획해보기', '점심약속좀 잡자', '친구들한테 회비알림 잊지말기!!!!!!!']});
+            i++;
+            console.log("tempString", tempString);
+        }
+    }
+
     onKeyboardItemSelected(keyboardId, params) {
         const receivedKeyboardData = `onItemSelected from "${keyboardId}"\nreceived params: ${JSON.stringify(params)}`;
         this.setState({receivedKeyboardData});
+    }
+
+    getInnderCardView() {
+        return [
+            <View style={{padding:30,width:SCREEN_WIDTH}}><Text>{innerArray[0].memo[0]}</Text></View>,
+            <View style={{padding:30,width:SCREEN_WIDTH}}><Text>{innerArray[0].memo[1]}</Text></View>,
+            <View style={{padding:30,width:SCREEN_WIDTH}}><Text>{innerArray[0].memo[2]}</Text></View>
+        ]
+
     }
 
     getCardView() {
@@ -145,7 +169,10 @@ export default class interactableTest1 extends Component {
                 onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
                 <Animated.Text
                     style={[styles.cardTitle,{fontSize:updateFontSize1}]}>2017. 6. 1</Animated.Text>
-                <Animated.View style={[styles.card,{opacity:updateOpacity1,}]}>
+                <Animated.View style={[styles.card,{opacity:updateOpacity1}]}>
+                    <Carousel width={SCREEN_WIDTH}>
+                        {this.getInnderCardView()}
+                    </Carousel>
                 </Animated.View>
             </View>,
 
@@ -159,6 +186,9 @@ export default class interactableTest1 extends Component {
                 <Animated.Text
                     style={[styles.cardTitle,{fontSize:updateFontSize2}]}>2017. 6. 2</Animated.Text>
                 <Animated.View style={[styles.card,{opacity:updateOpacity2}]}>
+                    <Carousel width={SCREEN_WIDTH}>
+                        {this.getInnderCardView()}
+                    </Carousel>
                 </Animated.View>
             </View>,
 
@@ -172,6 +202,9 @@ export default class interactableTest1 extends Component {
                 <Animated.Text
                     style={[styles.cardTitle,{fontSize:updateFontSize3}]}>2017. 6. 3</Animated.Text>
                 <Animated.View style={[styles.card,{opacity:updateOpacity3}]}>
+                    <Carousel width={SCREEN_WIDTH}>
+                        {this.getInnderCardView()}
+                    </Carousel>
                 </Animated.View>
             </View>,
 
@@ -185,6 +218,9 @@ export default class interactableTest1 extends Component {
                 <Animated.Text
                     style={[styles.cardTitle,{fontSize:updateFontSize4}]}>2017. 6. 4</Animated.Text>
                 <Animated.View style={[styles.card,{opacity:updateOpacity4}]}>
+                    <Carousel width={SCREEN_WIDTH}>
+                        {this.getInnderCardView()}
+                    </Carousel>
                 </Animated.View>
             </View>,
 
@@ -198,6 +234,9 @@ export default class interactableTest1 extends Component {
                 <Animated.Text
                     style={[styles.cardTitle,{fontSize:updateFontSize5}]}>2017. 6. 5</Animated.Text>
                 <Animated.View style={[styles.card,{opacity:updateOpacity5}]}>
+                    <Carousel width={SCREEN_WIDTH}>
+                        {this.getInnderCardView()}
+                    </Carousel>
                 </Animated.View>
             </View>,
 
@@ -211,9 +250,11 @@ export default class interactableTest1 extends Component {
                 <Animated.Text
                     style={[styles.cardTitle,{fontSize:updateFontSize6}]}>2017. 6. 6</Animated.Text>
                 <Animated.View style={[styles.card,{opacity:updateOpacity6}]}>
+                    <Carousel width={SCREEN_WIDTH}>
+                        {this.getInnderCardView()}
+                    </Carousel>
                 </Animated.View>
             </View>,
-
         ]
     }
 
@@ -307,10 +348,8 @@ export default class interactableTest1 extends Component {
 
     render() {
 
-
         return (
             <View style={{flex:1}}>
-
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     keyboardDismissMode={TrackInteractive ? 'interactive' : 'none'}
@@ -342,23 +381,6 @@ export default class interactableTest1 extends Component {
         );
     }
 
-    renderItem(item) {
-        return (
-
-            <Interactable.View
-                key="fifth"
-                horizontalOnly={true}
-                snapPoints={[
-            {x: 360},
-            {x: 0, damping: 0.8},
-            {x: -360}
-          ]}>
-                <View style={styles.Inndercard}>
-                    <Text style={{color:'red', fontSize:35}}>{item.key}</Text>
-                </View>
-            </Interactable.View>
-        );
-    }
 }
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -367,15 +389,16 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const styles = StyleSheet.create({
 
     card: {
-        height: 280,
+        height: 290,
         backgroundColor: '#469EEE',
         width: SCREEN_WIDTH,
-        marginVertical: 0,
+        marginVertical: 0.5,
+        borderRadius: 8,
         alignItems: 'center',
     },
 
     Inndercard: {
-        height: 280,
+        height: 300,
         width: SCREEN_WIDTH,
         backgroundColor: '#FFFF00',
         borderRadius: 8,
