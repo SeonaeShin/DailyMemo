@@ -18,14 +18,12 @@ import {
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Interactable from 'react-native-interactable';
 
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import {BlurView} from 'react-native-blur';
 import {KeyboardAccessoryView, KeyboardUtils} from 'react-native-keyboard-input';
 
 import Carousel from './Carousel'
-
 import './demoKeyboards';
 
 const IsIOS = Platform.OS === 'ios';
@@ -34,6 +32,32 @@ const TrackInteractive = false;
 var innerArray = [];
 
 const CARD_HEIGHT = 300;
+
+const Realm = require('realm');
+
+
+const TitleSchema = {
+    name: 'Title',
+    primeKey: 'title',
+    properties: {
+        title: 'string',
+        user: 'string',
+        memos: {
+            type: 'list', objectType: 'Memo'
+        }
+    }
+};
+
+const MemoSchema = {
+    name: 'Memo',
+    properties: {
+        title: 'string',
+        number: 'int',
+        description: 'string'
+    }
+};
+
+const realm = new Realm({schema: [TitleSchema, MemoSchema]});
 
 export default class interactableTest1 extends Component {
 
@@ -44,6 +68,7 @@ export default class interactableTest1 extends Component {
         this.keyboardAccessoryViewContent = this.keyboardAccessoryViewContent.bind(this);
         this.onKeyboardItemSelected = this.onKeyboardItemSelected.bind(this);
         this.resetKeyboardView = this.resetKeyboardView.bind(this);
+        this.hideKeyboardView  = this.hideKeyboardView.bind(this);
         this.onKeyboardResigned = this.onKeyboardResigned.bind(this);
         this.onActionButtonPress = this.onActionButtonPress.bind(this);
 
@@ -56,11 +81,24 @@ export default class interactableTest1 extends Component {
                 initialProps: undefined,
             },
             receivedKeyboardData: undefined,
-            keyboardShowing:false,
+            keyboardShowing: false,
+            specificDataTitle:{},
+            specificDataMemo:{}
         }
     }
 
     componentWillMount() {
+        var tempString;
+        var i = 1;
+        while (i < 7) {
+            tempString = '2017. 6. ' + i;
+            innerArray.push({'date': tempString, 'memo': ['주말 여행 계획해보기', '점심약속좀 잡자', '친구들한테 회비알림 잊지말기!!!!!!!']});
+            i++;
+            console.log("tempString", tempString);
+        }
+    }
+
+    componentDidMount() {
         var tempString;
         var i = 1;
         while (i < 7) {
@@ -77,14 +115,26 @@ export default class interactableTest1 extends Component {
     }
 
     getInnderCardView() {
-        return [
-            <View key={1} style={{paddingTop:100,paddingLeft:60,width:SCREEN_WIDTH}}><Text style={{color:'#393939'}}>{innerArray[0].memo[0]}</Text></View>,
-            <View key={2} style={{paddingTop:100,paddingLeft:60,width:SCREEN_WIDTH}}><Text style={{color:'#323232'}}>{innerArray[0].memo[1]}</Text></View>,
-            <View key={3} style={{paddingTop:100,paddingLeft:60,width:SCREEN_WIDTH}}><Text style={{color:'#FDEC4F'}}>{innerArray[0].memo[2]}</Text></View>
-        ]
+        return (
+            this.getSpecificDataMemo().map((obj,i)=><View key={i} style={{paddingTop:100,paddingLeft:60,width:SCREEN_WIDTH}}>
+                <Text style={{color:'#393939'}}>{obj.description}</Text></View>))
+    }
+
+    getSpecificDataTitle(){
+        var specificDataTitle = realm.objects('Title');
+
+        return specificDataTitle;
 
     }
 
+    getSpecificDataMemo(){
+
+        var theDateis = '2017. 6. 6'
+        var specificDataMemo = realm.objects('Memo').filtered('title = ' + `'` + theDateis + `'`);
+
+        return specificDataMemo;
+
+    }
     getCardView() {
         const fontTermA = (SCREEN_WIDTH / 2) * 1.6;
         const fontTermB = 100;
@@ -92,81 +142,34 @@ export default class interactableTest1 extends Component {
         const opaTermA = (SCREEN_WIDTH / 2) * 1.6;
         const opaTermB = 200;
 
-        var updateFontSize1 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 0, fontTermA * 0 + fontTermB],
-            outputRange: [20, 10],
-            extrapolate: 'clamp',
-        });
+        var updateSize = [], updateOpacity = [];
 
-        var updateFontSize2 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 1, fontTermA * 1 + fontTermB],
-            outputRange: [20, 10],
-            extrapolate: 'clamp',
-        });
+        console.log("this.getSpecificDataTitle()>>",this.getSpecificDataTitle().length);
+        var i =0;
+        while(i < this.getSpecificDataTitle().length){
+            console.log("updateSize>>",updateSize.length);
+            console.log("updateOpacity>>",updateOpacity.length);
 
-        var updateFontSize3 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 2, fontTermA * 2 + fontTermB],
-            outputRange: [20, 10],
-            extrapolate: 'clamp',
-        });
+            updateSize.push(this.state.scrollY.interpolate({
+                inputRange: [fontTermA * i, fontTermA * i + fontTermB],
+                outputRange: [20, 10],
+                extrapolate: 'clamp',
+            }));
 
-        var updateFontSize4 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 3, fontTermA * 3 + fontTermB],
-            outputRange: [20, 10],
-            extrapolate: 'clamp',
-        });
+            console.log("opaTermA * i",opaTermA * i);
 
-        var updateFontSize5 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 4, fontTermA * 4 + fontTermB],
-            outputRange: [20, 10],
-            extrapolate: 'clamp',
-        });
+            updateOpacity.push(this.state.scrollY.interpolate({
+                inputRange: [opaTermA * i, opaTermA * i + opaTermB],
+                outputRange: [1, 0.2],
+                extrapolate: 'clamp',
+            }));
 
-        var updateFontSize6 = this.state.scrollY.interpolate({
-            inputRange: [fontTermA * 5, fontTermA * 5 + fontTermB],
-            outputRange: [20, 10],
-            extrapolate: 'clamp',
-        });
+            i++;
+        }
 
-        var updateOpacity1 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 0, opaTermA * 0 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity2 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 1, opaTermA * 1 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity3 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 2, opaTermA * 2 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity4 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 3, opaTermA * 3 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity5 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 4, opaTermA * 4 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        var updateOpacity6 = this.state.scrollY.interpolate({
-            inputRange: [opaTermA * 5, opaTermA * 5 + opaTermB],
-            outputRange: [1, 0.2],
-            extrapolate: 'clamp',
-        });
-
-        return [
-            <View
-                key={1}
+        return (
+            this.getSpecificDataTitle().map((obj,i) => <View
+                key={i}
                 style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
                 scrollEventThrottle={10}
                 horizontal={false}
@@ -174,105 +177,15 @@ export default class interactableTest1 extends Component {
                 overScrollMode={'never'}
                 onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
                 <Animated.Text
-                    style={[styles.cardTitle,{fontSize:updateFontSize1}]}>2017. 6. 1</Animated.Text>
-                <Animated.View style={[styles.card,{opacity:updateOpacity1}]}>
+                    style={[styles.cardTitle,{fontSize:updateSize[i]}]}>{obj.title}</Animated.Text>
+                <Animated.View style={[styles.card,{opacity:updateOpacity[i]}]}>
                     <Carousel width={SCREEN_WIDTH}>
                         {this.getInnderCardView()}
                     </Carousel>
                 </Animated.View>
-                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
-            </View>,
-
-            <View
-                key={2}
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
-                scrollEventThrottle={10}
-                horizontal={false}
-                showsVerticalScrollIndicator={false}
-                overScrollMode={'never'}
-                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                <Animated.Text
-                    style={[styles.cardTitle,{fontSize:updateFontSize2}]}>2017. 6. 2</Animated.Text>
-                <Animated.View style={[styles.card,{opacity:updateOpacity2}]}>
-                    <Carousel width={SCREEN_WIDTH}>
-                        {this.getInnderCardView()}
-                    </Carousel>
-                </Animated.View>
-                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
-            </View>,
-
-            <View
-                key={3}
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
-                scrollEventThrottle={10}
-                horizontal={false}
-                showsVerticalScrollIndicator={false}
-                overScrollMode={'never'}
-                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                <Animated.Text
-                    style={[styles.cardTitle,{fontSize:updateFontSize3}]}>2017. 6. 3</Animated.Text>
-                <Animated.View style={[styles.card,{opacity:updateOpacity3}]}>
-                    <Carousel width={SCREEN_WIDTH}>
-                        {this.getInnderCardView()}
-                    </Carousel>
-                </Animated.View>
-                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
-            </View>,
-
-            <View
-                key={4}
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
-                scrollEventThrottle={10}
-                horizontal={false}
-                showsVerticalScrollIndicator={false}
-                overScrollMode={'never'}
-                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                <Animated.Text
-                    style={[styles.cardTitle,{fontSize:updateFontSize4}]}>2017. 6. 4</Animated.Text>
-                <Animated.View style={[styles.card,{opacity:updateOpacity4}]}>
-                    <Carousel>
-                        {this.getInnderCardView()}
-                    </Carousel>
-                </Animated.View>
-                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
-            </View>,
-
-            <View
-                key={5}
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
-                scrollEventThrottle={10}
-                horizontal={false}
-                showsVerticalScrollIndicator={false}
-                overScrollMode={'never'}
-                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                <Animated.Text
-                    style={[styles.cardTitle,{fontSize:updateFontSize5}]}>2017. 6. 5</Animated.Text>
-                <Animated.View style={[styles.card,{opacity:updateOpacity5}]}>
-                    <Carousel width={SCREEN_WIDTH}>
-                        {this.getInnderCardView()}
-                    </Carousel>
-                </Animated.View>
-                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
-            </View>,
-
-            <View
-                key={6}
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
-                scrollEventThrottle={10}
-                horizontal={false}
-                showsVerticalScrollIndicator={false}
-                overScrollMode={'never'}
-                onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]  )}>
-                <Animated.Text
-                    style={[styles.cardTitle,{fontSize:updateFontSize6}]}>2017. 6. 6</Animated.Text>
-                <Animated.View style={[styles.card,{opacity:updateOpacity6}]}>
-                    <Carousel width={SCREEN_WIDTH}>
-                        {this.getInnderCardView()}
-                    </Carousel>
-                </Animated.View>
-                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
-            </View>,
-        ]
+                <View
+                    style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
+            </View>))
     }
 
     getToolbarButtons() {
@@ -290,14 +203,19 @@ export default class interactableTest1 extends Component {
             {
                 text: '숨기기',
                 testID: 'reset',
-                onPress: () => this.resetKeyboardView(),
+                onPress: () => this.hideKeyboardView(),
             },
         ];
     }
 
+    hideKeyboardView(){
+        this.setState({customKeyboard: {}});
+        this.setState({keyboardShowing: false});
+        this.resetTextInput();
+    }
+
     resetKeyboardView() {
         this.setState({customKeyboard: {}});
-        this.setState({keyboardShowing:false});
         this.resetTextInput();
     }
 
@@ -319,7 +237,73 @@ export default class interactableTest1 extends Component {
         });
     }
 
+    realmToWrite() {
+        this.realmDataRead();
+
+
+        var theDateis = '2017. 6. 6';
+
+        var specificDataTitle;
+        var specificDataMemo;
+
+        specificDataTitle = realm.objects('Memo').filtered('title=' + `'` + theDateis + `'`);
+
+        if (specificDataTitle.length == 1);
+        else {
+            realm.write(() => {
+                realm.create('Title', {
+                        title: theDateis,
+                        user: 'user1'
+                    }
+                )
+            });
+        }
+
+        // realm.write(() => {
+        //
+        //     realm.delete(realm.objects('Memo'));
+        // })
+        specificDataMemo = realm.objects('Memo').filtered('title = ' + `'` + theDateis + `'`);
+
+        var num = 0;
+        for (var i in specificDataMemo) {
+            if (num == specificDataMemo[i].number)
+                num++;
+        }
+
+        realm.write(() => {
+
+            realm.create('Memo', {
+                title: theDateis,
+                number: num,
+                description: this.state.textValue,
+            });
+        });
+
+        this.realmDataRead();
+    }
+
+    realmDataRead() {
+
+        var specificDataTitle;
+        var specificDataMemo;
+
+        specificDataTitle = realm.objects('Title');
+        specificDataMemo = realm.objects('Memo');
+
+        this.setState({specificDataTitle:specificDataTitle, specificDataMemo:specificDataMemo});
+
+        for (var i in specificDataTitle) {
+            console.log("specificDataTitle.title=", specificDataTitle[i].title);
+        }
+
+        for (var i in specificDataMemo) {
+            console.log("specificDataMemo.title=", specificDataMemo[i].title, specificDataMemo[i].number, specificDataMemo[i].description);
+        }
+    }
+
     inputTextSave() {
+        this.realmToWrite();
         console.log("it is going to be saved!>> ", this.state.textValue);
     }
 
@@ -365,8 +349,8 @@ export default class interactableTest1 extends Component {
         );
     }
 
-    onActionButtonPress(){
-        this.setState({keyboardShowing:true});
+    onActionButtonPress() {
+        this.setState({keyboardShowing: true});
     }
 
     render() {
@@ -469,8 +453,8 @@ const styles = StyleSheet.create({
         left: 60,
         zIndex: 5,
         position: 'absolute',
-        color:'white',
-        fontSize:1
+        color: 'white',
+        fontSize: 1
     }
 });
 
