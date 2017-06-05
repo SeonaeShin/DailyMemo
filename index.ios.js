@@ -13,7 +13,8 @@ import {
     Animated,
     PixelRatio,
     Platform,
-    TouchableOpacity
+    TouchableOpacity,
+    KeyboardAvoidingView
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -28,9 +29,11 @@ import Carousel from './Carousel'
 import './demoKeyboards';
 
 const IsIOS = Platform.OS === 'ios';
-const TrackInteractive = true;
+const TrackInteractive = false;
 
 var innerArray = [];
+
+const CARD_HEIGHT = 300;
 
 export default class interactableTest1 extends Component {
 
@@ -42,6 +45,7 @@ export default class interactableTest1 extends Component {
         this.onKeyboardItemSelected = this.onKeyboardItemSelected.bind(this);
         this.resetKeyboardView = this.resetKeyboardView.bind(this);
         this.onKeyboardResigned = this.onKeyboardResigned.bind(this);
+        this.onActionButtonPress = this.onActionButtonPress.bind(this);
 
         this.state = {
             scrollX: new Animated.Value(0),
@@ -52,6 +56,7 @@ export default class interactableTest1 extends Component {
                 initialProps: undefined,
             },
             receivedKeyboardData: undefined,
+            keyboardShowing:false,
         }
     }
 
@@ -73,9 +78,9 @@ export default class interactableTest1 extends Component {
 
     getInnderCardView() {
         return [
-            <View style={{padding:30,width:SCREEN_WIDTH}}><Text>{innerArray[0].memo[0]}</Text></View>,
-            <View style={{padding:30,width:SCREEN_WIDTH}}><Text>{innerArray[0].memo[1]}</Text></View>,
-            <View style={{padding:30,width:SCREEN_WIDTH}}><Text>{innerArray[0].memo[2]}</Text></View>
+            <View key={1} style={{paddingTop:100,paddingLeft:60,width:SCREEN_WIDTH}}><Text style={{color:'#393939'}}>{innerArray[0].memo[0]}</Text></View>,
+            <View key={2} style={{paddingTop:100,paddingLeft:60,width:SCREEN_WIDTH}}><Text style={{color:'#323232'}}>{innerArray[0].memo[1]}</Text></View>,
+            <View key={3} style={{paddingTop:100,paddingLeft:60,width:SCREEN_WIDTH}}><Text style={{color:'#FDEC4F'}}>{innerArray[0].memo[2]}</Text></View>
         ]
 
     }
@@ -89,37 +94,37 @@ export default class interactableTest1 extends Component {
 
         var updateFontSize1 = this.state.scrollY.interpolate({
             inputRange: [fontTermA * 0, fontTermA * 0 + fontTermB],
-            outputRange: [30, 10],
+            outputRange: [20, 10],
             extrapolate: 'clamp',
         });
 
         var updateFontSize2 = this.state.scrollY.interpolate({
             inputRange: [fontTermA * 1, fontTermA * 1 + fontTermB],
-            outputRange: [30, 10],
+            outputRange: [20, 10],
             extrapolate: 'clamp',
         });
 
         var updateFontSize3 = this.state.scrollY.interpolate({
             inputRange: [fontTermA * 2, fontTermA * 2 + fontTermB],
-            outputRange: [30, 10],
+            outputRange: [20, 10],
             extrapolate: 'clamp',
         });
 
         var updateFontSize4 = this.state.scrollY.interpolate({
             inputRange: [fontTermA * 3, fontTermA * 3 + fontTermB],
-            outputRange: [30, 10],
+            outputRange: [20, 10],
             extrapolate: 'clamp',
         });
 
         var updateFontSize5 = this.state.scrollY.interpolate({
             inputRange: [fontTermA * 4, fontTermA * 4 + fontTermB],
-            outputRange: [30, 10],
+            outputRange: [20, 10],
             extrapolate: 'clamp',
         });
 
         var updateFontSize6 = this.state.scrollY.interpolate({
             inputRange: [fontTermA * 5, fontTermA * 5 + fontTermB],
-            outputRange: [30, 10],
+            outputRange: [20, 10],
             extrapolate: 'clamp',
         });
 
@@ -161,7 +166,8 @@ export default class interactableTest1 extends Component {
 
         return [
             <View
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                key={1}
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
                 scrollEventThrottle={10}
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
@@ -174,10 +180,12 @@ export default class interactableTest1 extends Component {
                         {this.getInnderCardView()}
                     </Carousel>
                 </Animated.View>
+                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
             </View>,
 
             <View
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                key={2}
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
                 scrollEventThrottle={10}
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
@@ -190,10 +198,12 @@ export default class interactableTest1 extends Component {
                         {this.getInnderCardView()}
                     </Carousel>
                 </Animated.View>
+                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
             </View>,
 
             <View
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                key={3}
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
                 scrollEventThrottle={10}
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
@@ -206,10 +216,12 @@ export default class interactableTest1 extends Component {
                         {this.getInnderCardView()}
                     </Carousel>
                 </Animated.View>
+                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
             </View>,
 
             <View
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                key={4}
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
                 scrollEventThrottle={10}
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
@@ -218,14 +230,16 @@ export default class interactableTest1 extends Component {
                 <Animated.Text
                     style={[styles.cardTitle,{fontSize:updateFontSize4}]}>2017. 6. 4</Animated.Text>
                 <Animated.View style={[styles.card,{opacity:updateOpacity4}]}>
-                    <Carousel width={SCREEN_WIDTH}>
+                    <Carousel>
                         {this.getInnderCardView()}
                     </Carousel>
                 </Animated.View>
+                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
             </View>,
 
             <View
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                key={5}
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
                 scrollEventThrottle={10}
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
@@ -238,10 +252,12 @@ export default class interactableTest1 extends Component {
                         {this.getInnderCardView()}
                     </Carousel>
                 </Animated.View>
+                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
             </View>,
 
             <View
-                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:300}}
+                key={6}
+                style={{backgroundColor:'transparent', alignItems:'center',justifyContent:'flex-end',height:CARD_HEIGHT}}
                 scrollEventThrottle={10}
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
@@ -254,6 +270,7 @@ export default class interactableTest1 extends Component {
                         {this.getInnderCardView()}
                     </Carousel>
                 </Animated.View>
+                <View style={{position:'absolute',justifyContent:'center',borderBottomWidth:0.4,width:SCREEN_WIDTH*0.7,borderBottomColor:'white',height:0}}/>
             </View>,
         ]
     }
@@ -271,7 +288,7 @@ export default class interactableTest1 extends Component {
                 onPress: () => this.showKeyboardView('AnotherKeyboardView', 'SECOND - 2 (passed prop)'),
             },
             {
-                text: 'reset',
+                text: '숨기기',
                 testID: 'reset',
                 onPress: () => this.resetKeyboardView(),
             },
@@ -280,6 +297,7 @@ export default class interactableTest1 extends Component {
 
     resetKeyboardView() {
         this.setState({customKeyboard: {}});
+        this.setState({keyboardShowing:false});
         this.resetTextInput();
     }
 
@@ -312,8 +330,9 @@ export default class interactableTest1 extends Component {
 
     keyboardAccessoryViewContent() {
         const InnerContainerComponent = (IsIOS && BlurView) ? BlurView : View;
+        var kbShowing = this.state.keyboardShowing === true ? null : 0
         return (
-            <InnerContainerComponent blurType="xlight" style={styles.blurContainer}>
+            <InnerContainerComponent blurType="xlight" style={[styles.blurContainer,{height:kbShowing}]}>
                 <View style={{borderTopWidth: styles.hairlineWidth, borderColor: '#bbb'}}/>
                 <View style={styles.inputContainer}>
                     <AutoGrowingTextInput
@@ -330,7 +349,7 @@ export default class interactableTest1 extends Component {
                     />
                     <TouchableOpacity style={styles.sendButton} onPress={() => {KeyboardUtils.dismiss();
                                                                                 this.inputTextSave();}}>
-                        <Text>Action</Text>
+                        <Text>Enter</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{flexDirection: 'row'}}>
@@ -344,6 +363,10 @@ export default class interactableTest1 extends Component {
                 </View>
             </InnerContainerComponent>
         );
+    }
+
+    onActionButtonPress(){
+        this.setState({keyboardShowing:true});
     }
 
     render() {
@@ -363,7 +386,7 @@ export default class interactableTest1 extends Component {
                     type={'tab'}
                     position={'right'}
                     offsetY={35}
-                    onPress={() => {}}
+                    onPress={() => this.onActionButtonPress()}
                     icon={<Ionicons name="ios-create-outline" style={{ alignItems:'center',fontSize: 26,height: 22, color: 'black', opacity: 1}}/>}
                 />
                 <KeyboardAccessoryView
@@ -389,16 +412,16 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const styles = StyleSheet.create({
 
     card: {
-        height: 290,
+        height: CARD_HEIGHT,
         backgroundColor: '#469EEE',
         width: SCREEN_WIDTH,
-        marginVertical: 0.5,
-        borderRadius: 8,
+        marginVertical: 0,
+        borderRadius: 0,
         alignItems: 'center',
     },
 
     Inndercard: {
-        height: 300,
+        height: CARD_HEIGHT,
         width: SCREEN_WIDTH,
         backgroundColor: '#FFFF00',
         borderRadius: 8,
@@ -411,13 +434,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
 
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-        paddingTop: 50,
-        paddingBottom: 50,
-    },
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -449,10 +465,12 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
     },
     cardTitle: {
-        top: 0,
+        top: 38,
         left: 60,
         zIndex: 5,
-        position: 'absolute'
+        position: 'absolute',
+        color:'white',
+        fontSize:1
     }
 });
 

@@ -17,15 +17,14 @@ class Carousel extends Component {
     static defaultProps = {
         hideIndicators: false,
         indicatorColor: '#000000',
-        indicatorSize: 20,
-        inactiveIndicatorColor: '#999999',
+        indicatorSize: 17,
+        inactiveIndicatorColor: '#E9E9E9',
         indicatorAtBottom: true,
-        indicatorOffset: 250,
         indicatorText: '•',
         inactiveIndicatorText: '•',
         width: null,
         initialPage: 0,
-        indicatorSpace: 25,
+        indicatorSpace: 200,
         loop: true
     }
 
@@ -52,7 +51,6 @@ class Carousel extends Component {
         if (this.props.initialPage > 0) {
             this.refs.pager.scrollToPage(this.props.initialPage, false);
         }
-
     }
 
     indicatorPressed(activePage) {
@@ -65,15 +63,7 @@ class Carousel extends Component {
             return null;
         }
 
-        var indicators = [],
-            indicatorStyle = this.props.indicatorAtBottom ? {bottom: this.props.indicatorOffset} : {top: this.props.indicatorOffset},
-            style, position;
-
-        position = {
-            width: this.props.children.length * this.props.indicatorSpace,
-        };
-
-        position.left = (this.getWidth() - position.width) / 1.3;
+        var indicators = [], style;
 
         for (var i = 0, l = this.props.children.length; i < l; i++) {
             if (typeof this.props.children[i] === "undefined") {
@@ -82,7 +72,7 @@ class Carousel extends Component {
             style = i === this.state.activePage ? {color: this.props.indicatorColor} : {color: this.props.inactiveIndicatorColor};
             indicators.push(
                 <Text
-                    style={[style, { fontSize: this.props.indicatorSize }]}
+                    style={[style, { fontSize: this.props.indicatorSize,width:13 }]}
                     key={i}
                     onPress={this.indicatorPressed.bind(this,i)}
                 >
@@ -96,7 +86,7 @@ class Carousel extends Component {
         }
 
         return (
-            <View style={[styles.pageIndicator,position]}>
+            <View style={[styles.pageIndicator]}>
                 {indicators}
             </View>
         );
@@ -131,9 +121,11 @@ const styles = StyleSheet.create({
     pageIndicator: {
         position: 'absolute',
         height:5,
-        top:0,
+        left:60,
+        top: 75,
         flexDirection: 'row',
-        alignItems: 'flex-start',
+        alignItems: 'center',
+        backgroundColor:'transparent',
     },
 });
 
